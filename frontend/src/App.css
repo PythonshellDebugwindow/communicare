@@ -1,0 +1,146 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  background: #e00;
+  width: 100%;
+  padding: 15px 25px;
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 2;
+  position: relative;
+}
+.header h1 {
+  margin: 0;
+}
+.header h1 a {
+  color: white;
+  font-weight: bold;
+  display: flex;
+  transition: text-shadow 0.2s;
+}
+.header h1 a:hover {
+  text-shadow: 0 0 20px white, 0 0 40px white;
+}
+.header h1 img {
+  margin-right: 15px;
+  height: 50px;
+}
+.header ul {
+  margin: 0;
+  list-style: none;
+  right: 0;
+  display: flex;
+  font-size: 1.8em;
+  line-height: 2em;
+}
+.header li:not(:last-child)::after {
+  content: "\2022";
+  color: black;
+  padding: 0 10px;
+}
+.header ul a {
+  color: black;
+  transition: text-shadow 0.2s;
+}
+.header ul a:hover {
+  color: #333;
+  text-shadow: 0 0 20px #333;
+}
+/*.header ul li:not(:first-child) {
+  margin-left: 30px;
+}*/
+
+.fade-in, section {
+  animation: fade-in 0.8s ease-in-out;
+  z-index: 1;
+}
+.fade-in-delayed {
+  animation-delay: 0.15s;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  25% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.sign-up-form {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  font-size: 1.2em;
+  margin-bottom: 15px;
+}
+.sign-up-form td {
+  padding-bottom: 10px;
+}
+.sign-up-form td:first-child {
+  display: flex;
+  text-align: right;
+}
+.sign-up-form input {
+  margin-left: 5px;
+}
+
+.error-message::before {
+  content: '!';
+  font-size: 1.1em;
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 1.3em;
+  height: 1.3em;
+  line-height: 1.3em;
+  display: inline-flex;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 9px;
+}
