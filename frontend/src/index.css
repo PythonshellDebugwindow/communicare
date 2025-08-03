@@ -48,6 +48,10 @@ p {
   font-size: 1.2em;
 }
 
+h2 + p {
+  margin-top: 0.5em;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid white;
@@ -71,7 +75,9 @@ button:hover:disabled {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+textarea
+{
   background: #222;
   border: 1px solid white;
   border-radius: 10px;
@@ -91,10 +97,20 @@ input[type="password"]:valid
   border-color: red;
 }
 
+textarea {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 1.1em;
+}
+
 section {
   background: linear-gradient(90deg, #a00, #800);
-  margin: 20px 35px;
+  margin: 20px 35px 35px;
   padding-bottom: 15px;
   border-radius: 25px;
   border: 1px solid white;
+}
+
+section a {
+  color: #8989ff;
+  text-decoration: underline;
 }

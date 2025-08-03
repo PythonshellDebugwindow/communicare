@@ -7,6 +7,9 @@ import AboutPage from './routes/AboutPage';
 import BodyPage from './routes/BodyPage';
 import HomePage from './routes/HomePage';
 import LogInPage from './routes/LogInPage';
+import LogOutPage from './routes/LogOutPage';
+import ManagePatients from './routes/ManagePatients';
+import PatientSubmissions from './routes/PatientSubmissions';
 import SignUpPage from './routes/SignUpPage';
 import UserPage from './routes/UserPage';
 
@@ -34,6 +37,18 @@ const appRouter = createBrowserRouter([
       {
         path: "log-in",
         element: <LogInPage />
+      },
+      {
+        path: "log-out",
+        element: <LogOutPage />
+      },
+      {
+        path: "patient-submissions",
+        element: <PatientSubmissions />
+      },
+      {
+        path: "patients",
+        element: <ManagePatients />
       },
       {
         path: "sign-up",

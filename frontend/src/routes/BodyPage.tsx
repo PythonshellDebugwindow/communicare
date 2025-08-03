@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import ErrorMessage from '../components/ErrorMessage';
 
-import { postBackend, useSetPageTitle } from '../utils';
+import { getBackend, postBackend, useSetPageTitle } from '../utils';
+import { useSearchParams } from 'react-router';
 
 interface IPoint {
   x: number;
@@ -10,7 +11,10 @@ interface IPoint {
 }
 
 export default function BodyPage() {
+  const [searchParams] = useSearchParams();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const baseCanvas = useRef<HTMLCanvasElement>(null);
 
   const [isPosting, setIsPosting] = useState(false);
   const [message, setMessage] = useState("");
@@ -20,16 +24,26 @@ export default function BodyPage() {
   const [bodyImageHasLoaded, setBodyImageHasLoaded] = useState(false);
   const undoImage = useRef(new Image());
   const [undoImageHasLoaded, setUndoImageHasLoaded] = useState(false);
-  const baseCanvas = useRef<HTMLCanvasElement>(null);
 
   const symptomNames = ["cough", "sneeze", "nausea", "runny nose", "fatigue"];
   const [symptoms, setSymptoms] = useState(symptomNames.map(name => ({
     name, selected: false
   })));
 
+  const [additional, setAdditional] = useState("");
+
+  const [patientDoctor, setPatientDoctor] = useState("");
+
+  const shareKey = +(searchParams.get('share') ?? "");
+
   useSetPageTitle("Patient");
 
   useEffect(() => {
+    if(!shareKey || isNaN(shareKey)) {
+      setMessage("No share key provided. Ask your doctor for the correct URL.");
+      return;
+    }
+
     if(!canvasRef.current || !baseCanvas.current) {
       return;
     }
@@ -38,40 +52,49 @@ export default function BodyPage() {
     if(!c) {
       throw new Error("Your browser does not support the canvas element.");
     }
-    
-    bodyImage.current.onload = () => {
-      if(canvasRef.current) {
-        canvasRef.current.width = 200;
-        canvasRef.current.height = 500;
-      }
-      c.strokeStyle = "red";
-      c.fillStyle = "red";
-      drawBodyWithPain(c, painAreas);
-      setBodyImageHasLoaded(true);
-      if(baseCanvas.current) {
-        baseCanvas.current.width = 200;
-        baseCanvas.current.height = 500;
-        const bc = baseCanvas.current.getContext('2d');
-        if(!bc) {
-          throw new Error("Your browser does not support the canvas element.");
-        }
-        drawBodyWithPain(bc, []);
-      }
-    };
-    bodyImage.current.src = "/body.png";
 
-    undoImage.current = new Image();
-    undoImage.current.onload = () => {
-      setUndoImageHasLoaded(true);
-      if(baseCanvas.current) {
-        const bc = baseCanvas.current.getContext('2d');
-        if(!bc) {
-          throw new Error("Your browser does not support the canvas element.");
-        }
-        bc.drawImage(undoImage.current, 0, 0, 40, 40);
+    setTimeout(async () => {
+      const result = await getBackend('patient-doctor/' + shareKey);
+      if(!result.ok) {
+        setMessage(result.body.message || `Error ${result.status}.`);
+        return;
       }
-    };
-    undoImage.current.src = "/undo.png";
+      setPatientDoctor(result.body.name);
+      
+      bodyImage.current.onload = () => {
+        if(canvasRef.current) {
+          canvasRef.current.width = 200;
+          canvasRef.current.height = 500;
+        }
+        c.strokeStyle = "red";
+        c.fillStyle = "red";
+        drawBodyWithPain(c, painAreas);
+        setBodyImageHasLoaded(true);
+        if(baseCanvas.current) {
+          baseCanvas.current.width = 200;
+          baseCanvas.current.height = 500;
+          const bc = baseCanvas.current.getContext('2d');
+          if(!bc) {
+            throw new Error("Your browser does not support the canvas element.");
+          }
+          drawBodyWithPain(bc, []);
+        }
+      };
+      bodyImage.current.src = "/body2.png";
+
+      undoImage.current = new Image();
+      undoImage.current.onload = () => {
+        setUndoImageHasLoaded(true);
+        if(baseCanvas.current) {
+          const bc = baseCanvas.current.getContext('2d');
+          if(!bc) {
+            throw new Error("Your browser does not support the canvas element.");
+          }
+          bc.drawImage(undoImage.current, 0, 0, 40, 40);
+        }
+      };
+      undoImage.current.src = "/undo.png";
+    });
   }, [canvasRef, baseCanvas]);
 
   function drawBodyWithPain(c: CanvasRenderingContext2D, points: IPoint[], subOneFromUndoCount: boolean = false) {
@@ -165,9 +188,12 @@ export default function BodyPage() {
 
     setIsPosting(true);
 
+    c.clearRect(0, 0, 40, 40);
+
     const pngData = canvasRef.current.toDataURL('image/png');
     const activeSymptoms = symptoms.flatMap(symptom => symptom.selected ? [symptom.name] : []);
-    const result = await postBackend('body', { image: pngData, symptoms: activeSymptoms });
+    const requestBody = { image: pngData, symptoms: activeSymptoms, additional, shareKey };
+    const result = await postBackend('body', requestBody);
     if(!result.ok) {
       setMessage(result.body.message);
     }
@@ -178,15 +204,28 @@ export default function BodyPage() {
   return (
     <section>
       <h2>Patient Page</h2>
+      {!patientDoctor && !message && <p>Working...</p>}
+      {patientDoctor && (
+        <p style={{ marginLeft: "40px", marginRight: "40px" }}>
+          Select the areas on the body below which are causing you pain, and select
+          appropriate symptoms. You can also leave other comments if you wish. The
+          results will be analysed and reviewed by Dr. {patientDoctor}.
+        </p>
+      )}
       <ErrorMessage message={message} />
-      <button
-        type="button"
-        onClick={postData}
-        disabled={isPosting}
+      {!!shareKey && patientDoctor && (
+        <button
+          type="button"
+          onClick={postData}
+          disabled={isPosting}
+          style={{ marginBottom: "10px" }}
+        >
+          {isPosting ? "Working..." : "↑ Upload"}
+        </button>
+      )}
+      <div
+        style={{ display: (shareKey && patientDoctor) ? "flex" : "none", justifyContent: "center" }}
       >
-        {isPosting ? "Working..." : "↑ Upload"}
-      </button>
-      <div style={{ display: "flex", justifyContent: "center" }}>
         <canvas
           onClick={handleClick}
           onMouseMove={handleMouseMove}
@@ -196,30 +235,36 @@ export default function BodyPage() {
           ref={baseCanvas}
           style={{ display: "none" }}
         />
-        <ul style={{ listStyle: "none", textAlign: "left" }}>
-          {symptoms.map((symptom, i) => (
-            <li key={symptom.name}>
-              <label style={{ cursor: "pointer" }} onClick={() => console.log(symptom)}>
-                <input
-                  type="checkbox"
-                  checked={symptom.selected}
-                  onChange={e => {
-                    const newSymptom = { name: symptom.name, selected: e.target.checked };
-                    setSymptoms(symptoms.with(i, newSymptom));
-                  }}
-                />
-                {symptom.name}
-              </label>
-            </li>
-          ))}
-        </ul>
+        <div>
+          <ul style={{ listStyle: "none", textAlign: "left" }}>
+            {symptoms.map((symptom, i) => (
+              <li key={symptom.name}>
+                <label style={{ cursor: "pointer" }} onClick={() => console.log(symptom)}>
+                  <input
+                    type="checkbox"
+                    checked={symptom.selected}
+                    onChange={e => {
+                      const newSymptom = { name: symptom.name, selected: e.target.checked };
+                      setSymptoms(symptoms.with(i, newSymptom));
+                    }}
+                  />
+                  {symptom.name}
+                </label>
+              </li>
+            ))}
+          </ul>
+          <div style={{ textAlign: "left", marginLeft: "42px" }}>
+            <h3 style={{ fontSize: "1.5em", marginBottom: "5px" }}>
+              <label htmlFor="additional">Additional notes:</label>
+            </h3>
+            <textarea
+              id="additional"
+              value={additional}
+              onChange={e => setAdditional(e.target.value)}
+              style={{ width: "150%", height: "8em" }} />
+          </div>
+        </div>
       </div>
-      {/* <img
-        src="/body.png"
-        style={{ height: "500px" }}
-        onClick={handleClick}
-        // ref={bodyImgRef}
-      /> */}
     </section>
   );
 }

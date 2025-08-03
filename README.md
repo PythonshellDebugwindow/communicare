@@ -1,20 +1,18 @@
 # CommuniCare: Bridging the Medical Communication Gap 
 
-#### "88% of adults have substandard health literacy, 2 and communication failures contribute to over 70% of sentinel events." (Government of US, 2025-Apr-15)
+#### According to recent Canadian healthcare statistics, "The national median wait time for all referrals (including urgent) was 78 days, or 11 weeks, with 1 in 4 patients having to wait 175 days (25 weeks) or longer for their specialist appointment."
 
-## Inpsiration/Issue:
-Children, elders, and non-English speaking patients in the ER often struggle to communicate their symptoms swiftly and articulately, which leads to higher rates of misdiagnosis, delayed treament, and unintended harm. Our project, CommuniCare, enpowers individuals to express their symptoms with interative body diagrams, symptom images, and adaptive AI-powered translations to medical English, tailored to their language and communication abilities. By bridging these gaps in medical communication, we improve safety, equity, and efficiency in urgent care settings. Additionally, it allows patients to refine their explanations before the appointment and communicate online with the doctor to speed up appointments.
+## Our Inspiration:
+As seen by government statistics, the health care industry continues to suffer significantly from inadequate health care professionals to match the population resulting in major dissatification among patients and overworked doctors. Our project, Communicare, strives to overcome this persistent issue through optimization of appointment and diagnosis methods through the asistance of technology and ai. Communicare allows doctors to assign short surveys to patients including and interactive body map to allow them to communicate their situation ahead of the appointment. Additionally, communicare uses ai to help patients communicate their symptoms and convert their organize their information to be more articulate and readable to doctors. This allows doctors to save significant amounts of time on miscommunication.
 
 ## Key Features
-Iterative human body to help patients communicate symptoms
- - iteractive, clickable body maps for intuitive symptom communication
- - images and GIFs, e.g., a coughing animation
-Translation and rewording of patient's speech
- - Speech input and real-time, context-sensitive translation
- - Gemini AI—adapting questions and answers to patients literacy level and language
- - Efficiently explains symptoms to doctors efficiently through medical terms
+ - Doctors have a database of their patients and their respective submissions
+ - Iteractive, clickable body maps for intuitive symptom communication
+ - Images and GIFs, e.g., a coughing animation
 
 
-## Dates
-Created: 2025-08-01
-Last Updated: 2025-08-02
+### Created
+2025, August 1st
+
+### Last Updated
+2025, August 2nd

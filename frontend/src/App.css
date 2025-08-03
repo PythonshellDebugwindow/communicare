@@ -77,20 +77,17 @@
 }
 .header li:not(:last-child)::after {
   content: "\2022";
-  color: black;
+  color: #222;
   padding: 0 10px;
 }
 .header ul a {
-  color: black;
+  color: #222;
   transition: text-shadow 0.2s;
 }
 .header ul a:hover {
-  color: #333;
-  text-shadow: 0 0 20px #333;
+  color: #444;
+  text-shadow: 0 0 20px #444;
 }
-/*.header ul li:not(:first-child) {
-  margin-left: 30px;
-}*/
 
 .fade-in, section {
   animation: fade-in 0.8s ease-in-out;
@@ -143,4 +140,19 @@
   justify-content: center;
   font-weight: bold;
   margin-right: 9px;
+}
+
+.patient-submission {
+  border: 4px solid black;
+  margin: 10px 40px 20px;
+  padding: 10px;
+  border-radius: 25px;
+  background: #0003;
+}
+
+.markdown-container p:first-child {
+  margin: 0;
+}
+.markdown-container ul {
+  font-size: 1.15em;
 }

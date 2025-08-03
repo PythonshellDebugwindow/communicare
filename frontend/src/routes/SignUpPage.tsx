@@ -10,6 +10,7 @@ export default function SignUpPage() {
   const navigate = useNavigate();
   
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [message, setMessage] = useState("");
@@ -21,7 +22,7 @@ export default function SignUpPage() {
   async function runSignUp() {
     setIsSigningUp(true);
     
-    const result = await postBackend('sign-up', { username, password });
+    const result = await postBackend('sign-up', { name: username, email, password });
     setIsSigningUp(false);
     if(!result.ok) {
       setMessage(result.body.message);
@@ -54,6 +55,22 @@ export default function SignUpPage() {
                   id="username"
                   value={username}
                   onChange={e => setUsername(e.target.value)}
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="email">
+                  Email:
+                </label>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  id="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   required
                 />
               </td>

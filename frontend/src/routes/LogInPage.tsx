@@ -9,19 +9,19 @@ import { postBackend, useSetPageTitle } from '../utils';
 export default function LogInPage() {
   const navigate = useNavigate();
   
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [message, setMessage] = useState("");
 
   const { setToken } = useContext(AuthTokenContext);
 
-  useSetPageTitle("Log Up");
+  useSetPageTitle("Log In");
 
   async function runLogIn() {
     setIsLoggingIn(true);
     
-    const result = await postBackend('log-in', { username, password });
+    const result = await postBackend('log-in', { email, password });
     setIsLoggingIn(false);
     if(!result.ok) {
       setMessage(result.body.message);
@@ -44,16 +44,16 @@ export default function LogInPage() {
           <tbody>
             <tr>
               <td>
-                <label htmlFor="username">
-                  Username:
+                <label htmlFor="email">
+                  Email:
                 </label>
               </td>
               <td>
                 <input
                   type="text"
-                  id="username"
-                  value={username}
-                  onChange={e => setUsername(e.target.value)}
+                  id="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   required
                 />
               </td>
