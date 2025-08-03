@@ -24,14 +24,14 @@ export default function AboutPage() {
 
         <h3 className="fade-in fade-in-delayed">What We Offer</h3>
         <p className="fade-in fade-in-delayed">
-          Our innovative platform features an iterative, interactive human body map designed to make symptom
+          Our innovative platform features an interactive human body map designed to make symptom
           communication easy and intuitive. Patients can simply click on relevant body areas and use visual
           aids to accurately describe what they're experiencing. This improved communication aims to streamline
-          consultations, helping healthcare providers better understand and prioritize patient needs.
+          consultations, helping healthcare providers better understand and prioritise patient needs.
         </p>
 
         <p className="fade-in fade-in-delayed">
-          <b>Let's make miscommunication and ridiculous wait times obselete.</b>
+          <b>Let's make miscommunication and ridiculous wait times obsolete.</b>
         </p>
       </div>
     </section>

@@ -18,7 +18,7 @@ By enabling doctors to assign pre-appointment surveys to patients, including int
 - They also have access to a quick selection of common symptoms, such as coughing and fever, to streamline information gathering.
 - Advanced AI synthesises patient input to provide detailed condition analyses before appointments, facilitating efficient diagnosis.
 
-## What's Next For Communicare
+## What's Next for CommuniCare
 1. Integration with professional healthcare technologies and systems.
 2. Training AI models specifically for this task to improve clarity, reduce medical workload, and assist in smooth interactions between patients and doctors.
 3. Patient-friendly speech recognition tailored for patients with limited literacy or typing skills.
