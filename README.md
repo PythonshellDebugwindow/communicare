@@ -1,4 +1,4 @@
-# CommuniCare: Driving better healthcare via communication
+# CommuniCare: Better communication driving better healthcare
 
 #### Background
 
