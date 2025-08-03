@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
 import ErrorMessage from '../components/ErrorMessage';
 
 import { getBackend, postBackend, useSetPageTitle } from '../utils';
-import { useSearchParams } from 'react-router';
 
 interface IPoint {
   x: number;

@@ -1,4 +1,4 @@
-# CommuniCare: Bridging the Medical Communication Gap
+# CommuniCare: Driving better healthcare via communication
 
 #### Background
 
@@ -20,11 +20,11 @@ By enabling doctors to assign pre-appointment surveys to patients, including int
 
 ## What's Next For Communicare
 1. Integration with professional healthcare technologies and systems.
-2. Train AI models specifically for this task to improve clarity, reduce medical workload, and assist in smooth interactions between patients and doctors.
+2. Training AI models specifically for this task to improve clarity, reduce medical workload, and assist in smooth interactions between patients and doctors.
 3. Patient-friendly speech recognition tailored for patients with limited literacy or typing skills.
 4. Automatic translations from the patient's preferred language into accurate medical English for better diagnosis.
-5. Increase diagrams and images to help patients identify and communicate their symptoms better.
-6. Visualize symptoms through animations to assist patients in selecting the most accurate descriptions of their condition.
+5. Increased diagrams and images to help patients identify and communicate their symptoms better.
+6. Visualisation of symptoms through animations to assist patients in selecting the most accurate descriptions of their condition.
 
 ## Stack
 **Frontend:**
@@ -44,4 +44,4 @@ By enabling doctors to assign pre-appointment surveys to patients, including int
 ### Project Timeline
 
 - **Created:** August 1, 2025
-- **Last Updated:** August 2, 2025
+- **Last Updated:** August 3, 2025
