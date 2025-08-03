@@ -6,6 +6,7 @@ import Header from './components/Header';
 
 import AboutPage from './routes/AboutPage';
 import BodyPage from './routes/BodyPage';
+import EditUserPage from './routes/EditUserPage';
 import HomePage from './routes/HomePage';
 import LogInPage from './routes/LogInPage';
 import LogOutPage from './routes/LogOutPage';
@@ -35,6 +36,10 @@ const appRouter = createBrowserRouter([
       {
         path: "body",
         element: <BodyPage />
+      },
+      {
+        path: "edit-user",
+        element: <EditUserPage />
       },
       {
         path: "log-in",

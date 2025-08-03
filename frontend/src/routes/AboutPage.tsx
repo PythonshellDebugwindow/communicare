@@ -14,24 +14,24 @@ export default function AboutPage() {
           professionals alike face significant challenges.
         </p>
 
-        <h3>Our Inspiration</h3>
-        <p>
+        <h3 className="fade-in">Our Inspiration</h3>
+        <p className="fade-in">
           The Canadian healthcare system struggles with a shortage of healthcare professionals to meet growing
           patient demand, leading to overcrowded clinics, long wait times, and dissatisfaction among patients
-          and doctors. At CommuniCare, we're motivated to improve this experience by enhancing how patients
-          communicate their symptoms and needs.
+          and doctors. We decided to create CommuniCare because we want to improve this experience by enhancing
+          how patients communicate their symptoms.
         </p>
 
-        <h3>What We Offer</h3>
-        <p>
+        <h3 className="fade-in fade-in-delayed">What We Offer</h3>
+        <p className="fade-in fade-in-delayed">
           Our innovative platform features an iterative, interactive human body map designed to make symptom
           communication easy and intuitive. Patients can simply click on relevant body areas and use visual
           aids to accurately describe what they're experiencing. This improved communication aims to streamline
           consultations, helping healthcare providers better understand and prioritize patient needs.
         </p>
 
-        <p>
-          Join us in transforming healthcare communication and making wait times and miscommunication a thing of the past.
+        <p className="fade-in fade-in-delayed">
+          <b>Let's make miscommunication and ridiculous wait times obselete.</b>
         </p>
       </div>
     </section>

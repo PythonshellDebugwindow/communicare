@@ -214,7 +214,7 @@ export default function BodyPage() {
       {patientName && <p>Welcome, {patientName}!</p>}
       {!patientDoctor && !message && <p>Working...</p>}
       {patientDoctor && (
-        <p style={{ marginLeft: "40px", marginRight: "40px" }}>
+        <p style={{ marginLeft: "50px", marginRight: "50px" }}>
           Select the areas on the body below which are causing you pain, and select
           appropriate symptoms. You can also leave other comments if you wish. The
           results will be analysed and reviewed by Dr. {patientDoctor}.

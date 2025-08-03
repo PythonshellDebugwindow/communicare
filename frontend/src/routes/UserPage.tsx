@@ -18,6 +18,9 @@ function UserPageData({ userData }: { userData: IDoctorData }) {
       <p>
         <Link to="/patient-submissions">View your patients' submissions</Link>
       </p>
+      <p>
+        <Link to="/edit-user">Edit your name or email</Link>
+      </p>
     </>
   );
 }

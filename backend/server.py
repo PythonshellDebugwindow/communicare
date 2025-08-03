@@ -335,6 +335,48 @@ def log_in_route():
     return {"token": auth_token}, 200
 
 
+# Edit the user's data
+@app.route('/edit-user', methods=['POST'])
+def edit_user_route():
+    try:
+        verify_jwt_in_request()
+    except Exception:
+        return {"message": "Please log in"}, 400
+    
+    # get json from request
+    try:
+        json = request.get_json()
+    except:
+        return {"message": "Invalid request body"}, 400
+    
+    # ensure valid request
+    if not json.get("name"):
+        return {"message": "Please provide an name."}, 400
+    if not json.get("email"):
+        return {"message": "Please provide an email."}, 400
+    
+    doctor = doctors.find_one({"_id": ObjectId(get_jwt_identity())})
+    if doctor is None:
+        return {"message": "Invalid request body"}, 400
+    
+    collision = doctors.find_one({"email": json["email"]})
+    if collision is not None and str(collision["_id"]) != str(doctor["_id"]):
+        return {"message": "The provided email is already taken."}, 400
+    
+    # currently inserts test data, should insert user data
+    doctors.update_one(
+        {"_id": doctor["_id"]},
+        {"$set": {
+            "name": json["name"],
+            "email": json["email"]
+        }}
+    )
+
+    response = Response()
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:7979')
+    return response, 204
+
+
 # Hash password for database usage
 def hash_password(password: str):
     return sha256(password.encode('utf-8')).hexdigest()

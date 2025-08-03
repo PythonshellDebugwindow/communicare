@@ -6,7 +6,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  background: linear-gradient(25deg, #d00, #e00);
+  background: linear-gradient(25deg, #c00, #e00, #c00);
   width: 100%;
   padding: 15px 25px;
   margin: 0;
@@ -60,6 +60,9 @@
 }
 .fade-in-delayed {
   animation-delay: 0.15s;
+}
+.fade-in-delayed-2 {
+  animation-delay: 0.25s;
 }
 
 @keyframes fade-in {

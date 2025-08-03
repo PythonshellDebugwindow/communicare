@@ -62,7 +62,7 @@ export default function PatientSubmissions() {
               <div style={{ display: "flex", justifyContent: "center", textAlign: "left" }}>
                 <img
                   src={BACKEND_URL + submission.imagePath}
-                  style={{ height: "500px", marginRight: "20px", transform: "translateX(7px)" }}
+                  style={{ height: "500px", marginRight: "40px", transform: "translateX(7px)" }}
                 />
                 <div style={{ marginRight: "25px"}}>
                   <p style={{ marginTop: "0" }}>
@@ -93,7 +93,7 @@ export default function PatientSubmissions() {
                   </div>
                 </div>
               </div>
-              <p style={{ textAlign: "center", margin: "0 0 10px" }}>
+              <p style={{ margin: "0 0 10px" }}>
                 <i>Submitted on {submission.created}</i>
               </p>
             </div>
