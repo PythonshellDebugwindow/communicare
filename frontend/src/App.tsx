@@ -1,3 +1,4 @@
+import { useContext, useState } from 'react';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router-dom';
 
@@ -10,12 +11,13 @@ import LogInPage from './routes/LogInPage';
 import LogOutPage from './routes/LogOutPage';
 import ManagePatients from './routes/ManagePatients';
 import PatientSubmissions from './routes/PatientSubmissions';
+import RemovePatient from './routes/RemovePatient';
 import SignUpPage from './routes/SignUpPage';
 import UserPage from './routes/UserPage';
 
-import './App.css';
-import { useContext, useState } from 'react';
 import AuthTokenContext from './AuthTokenContext';
+
+import './App.css';
 
 const appRouter = createBrowserRouter([
   {
@@ -49,6 +51,10 @@ const appRouter = createBrowserRouter([
       {
         path: "patients",
         element: <ManagePatients />
+      },
+      {
+        path: "remove-patient",
+        element: <RemovePatient />
       },
       {
         path: "sign-up",

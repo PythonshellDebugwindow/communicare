@@ -65,7 +65,6 @@ button {
   color: white;
 }
 button:hover {
-  /* border-color: #646cff; */
   background: #555;
   border-color: red;
 }

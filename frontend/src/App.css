@@ -1,55 +1,19 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  background: #e00;
+  background: linear-gradient(25deg, #d00, #e00);
   width: 100%;
   padding: 15px 25px;
   margin: 0;
   box-sizing: border-box;
   z-index: 2;
   position: relative;
+  border-bottom: 1px solid black;
 }
 .header h1 {
   margin: 0;
@@ -65,6 +29,7 @@
 }
 .header h1 img {
   margin-right: 15px;
+  margin-top: 3px;
   height: 50px;
 }
 .header ul {

@@ -16,6 +16,7 @@ from flask_jwt_extended import (
 from hashlib import sha256
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from datetime import datetime
 
 load_dotenv(".backend.env")
 
@@ -61,6 +62,7 @@ def find():
             doc_id = name["doctor_id"]
             if doc_id == target_doctor_id:
                 res.append({"name": name["name"], "shareKey": str(name["unique_id"])})
+        res.sort(key=lambda name: name["name"])
         return jsonify(res), 200
     except Exception as e:
         traceback.print_exc()
@@ -112,13 +114,23 @@ def body_route():
         model="gemini-2.5-flash",
         contents=[
             file,
-            "You are a medical diagnostic system which, given an image with red bull's-eyes representing "
-            "areas of pain as well as a list of symptoms, will return an evaluation and diagnosis/diagnoses. "
-            "Be matter-of-fact in your responses. Symptoms are as follows: " + ", ".join(symptoms) + "."
+            "You are a medical diagnostic system. You will be given an image with red bull's-eyes representing "
+            "areas of pain, a list of the patient's symptoms, and any additional notes given by the patient; "
+            "you will use this information to return an evaluation and diagnosis/diagnoses. "
+            "Be matter-of-fact in your responses. Symptoms are as follows: " + ", ".join(symptoms) + ". "
+            + (("The rest of this message is the user's additional notes: " + additional) if additional else "There "
+               "are no additional notes given by the user.")
             # "Return the body parts of this image that have red bull's-eyes as a python list (only the list please)"
             # ". And how do they relate to the following symptoms: " + ", ".join(symptoms) + "? Be terse."
         ],
     )
+
+    time_now = datetime.now()
+    time_parts = [
+        str(int(time_now.strftime("%d"))), time_now.strftime(" %B %Y at "), 
+        str(int(time_now.strftime("%I"))), time_now.strftime(":%M %p")
+    ]
+    time_str = "".join(time_parts)
 
     body_submissions.insert_one({
         "patient_id": patient_data["_id"],
@@ -127,12 +139,13 @@ def body_route():
         "image_path": filename,
         "symptoms": symptoms,
         "additional": additional,
-        "diagnosis": res.text
+        "diagnosis": res.text,
+        "created": time_str
     })
 
-    response = jsonify({"message": res.text})
+    response = Response()
     response.headers.add('Access-Control-Allow-Origin', 'http://localhost:7979')
-    return response
+    return response, 204
 
 
 @app.route('/patient-submissions', methods=['GET'])
@@ -153,7 +166,8 @@ def patient_submissions_route():
             "imagePath": s["image_path"],
             "symptoms": s["symptoms"],
             "additional": s.get("additional", ""),
-            "diagnosis": s["diagnosis"]
+            "diagnosis": s["diagnosis"],
+            "created": s["created"]
         }
         for s in submissions
     ]
@@ -175,7 +189,7 @@ def patient_doctor_route(unique_id: str):
     if doctor is None:
         return {"message": "Your doctor could not be found in our records."}, 400
     
-    return {"name": doctor["name"]}, 200
+    return {"name": doctor["name"], "patientName": patient_data["name"]}, 200
 
 
 # Use mongodb to store patient information
@@ -223,7 +237,7 @@ def user_data_route():
         return {"message": "Please log in"}, 400
     
     user_data = {
-        "name": data["name"] + " " + str(user_id),
+        "name": data["name"],
         "email": data["email"]
     }
 
@@ -234,15 +248,24 @@ def user_data_route():
 
 
 # delete patient info from db through id
-@app.route('/delete-data', methods=['GET'])
-def delete_data_route():
+@app.route('/remove-patient', methods=['POST'])
+def remove_patient_route():
     try:
         verify_jwt_in_request()
     except Exception:
         return {"message": "Please log in"}, 400
     
-    user_id = get_jwt_identity()
-    doctors.delete_one({"_id": ObjectId(user_id)})
+    # get json from request
+    try:
+        json = request.get_json()
+    except:
+        return {"message": "Invalid request body"}, 400
+    
+    patient_key = json.get('key')
+    if not isinstance(patient_key, str) or not patient_key.isdigit():
+        return {"message": "Invalid request body"}, 400
+    
+    patients.delete_one({"unique_id": int(patient_key)})
     return {}, 204
 
 

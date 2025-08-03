@@ -17,6 +17,7 @@ export default function BodyPage() {
   const baseCanvas = useRef<HTMLCanvasElement>(null);
 
   const [isPosting, setIsPosting] = useState(false);
+  const [hasPosted, setHasPosted] = useState(false);
   const [message, setMessage] = useState("");
 
   const [painAreas, setPainAreas] = useState<IPoint[]>([]);
@@ -25,7 +26,9 @@ export default function BodyPage() {
   const undoImage = useRef(new Image());
   const [undoImageHasLoaded, setUndoImageHasLoaded] = useState(false);
 
-  const symptomNames = ["cough", "sneeze", "nausea", "runny nose", "fatigue"];
+  const symptomNames = [
+    "chills", "coughing", "dizziness", "fatigue", "fever", "nausea", "runny nose", "sneezing", "wheezing"
+  ];
   const [symptoms, setSymptoms] = useState(symptomNames.map(name => ({
     name, selected: false
   })));
@@ -33,10 +36,11 @@ export default function BodyPage() {
   const [additional, setAdditional] = useState("");
 
   const [patientDoctor, setPatientDoctor] = useState("");
+  const [patientName, setPatientName] = useState("");
 
   const shareKey = +(searchParams.get('share') ?? "");
 
-  useSetPageTitle("Patient");
+  useSetPageTitle("Patient Survey");
 
   useEffect(() => {
     if(!shareKey || isNaN(shareKey)) {
@@ -60,6 +64,7 @@ export default function BodyPage() {
         return;
       }
       setPatientDoctor(result.body.name);
+      setPatientName(result.body.patientName);
       
       bodyImage.current.onload = () => {
         if(canvasRef.current) {
@@ -187,6 +192,7 @@ export default function BodyPage() {
     }
 
     setIsPosting(true);
+    setMessage("");
 
     c.clearRect(0, 0, 40, 40);
 
@@ -194,16 +200,18 @@ export default function BodyPage() {
     const activeSymptoms = symptoms.flatMap(symptom => symptom.selected ? [symptom.name] : []);
     const requestBody = { image: pngData, symptoms: activeSymptoms, additional, shareKey };
     const result = await postBackend('body', requestBody);
+    setIsPosting(false);
     if(!result.ok) {
       setMessage(result.body.message);
+      return;
     }
-    console.log(result.body.message)
-    setIsPosting(false);
+    setHasPosted(true);
   }
   
   return (
     <section>
-      <h2>Patient Page</h2>
+      <h2>Patient Survey</h2>
+      {patientName && <p>Welcome, {patientName}!</p>}
       {!patientDoctor && !message && <p>Working...</p>}
       {patientDoctor && (
         <p style={{ marginLeft: "40px", marginRight: "40px" }}>
@@ -212,19 +220,18 @@ export default function BodyPage() {
           results will be analysed and reviewed by Dr. {patientDoctor}.
         </p>
       )}
-      <ErrorMessage message={message} />
-      {!!shareKey && patientDoctor && (
-        <button
-          type="button"
-          onClick={postData}
-          disabled={isPosting}
-          style={{ marginBottom: "10px" }}
-        >
-          {isPosting ? "Working..." : "↑ Upload"}
-        </button>
+      {hasPosted && (
+        <>
+          <img
+            src="/checkmark.png"
+            style={{ height: "80px", background: "white", borderRadius: "50%" }}
+          />
+          <p>Your responses have been sent. You can now close this page.</p>
+        </>
       )}
+      <ErrorMessage message={message} />
       <div
-        style={{ display: (shareKey && patientDoctor) ? "flex" : "none", justifyContent: "center" }}
+        style={{ display: (shareKey && patientDoctor && !hasPosted) ? "flex" : "none", justifyContent: "center" }}
       >
         <canvas
           onClick={handleClick}
@@ -247,6 +254,7 @@ export default function BodyPage() {
                       const newSymptom = { name: symptom.name, selected: e.target.checked };
                       setSymptoms(symptoms.with(i, newSymptom));
                     }}
+                    style={{ position: "relative", top: "2px" }}
                   />
                   {symptom.name}
                 </label>
@@ -265,6 +273,16 @@ export default function BodyPage() {
           </div>
         </div>
       </div>
+      {!!shareKey && patientDoctor && !hasPosted && (
+        <button
+          type="button"
+          onClick={postData}
+          disabled={isPosting}
+          style={{ marginBottom: "10px" }}
+        >
+          {isPosting ? "Working..." : "↑ Upload"}
+        </button>
+      )}
     </section>
   );
 }

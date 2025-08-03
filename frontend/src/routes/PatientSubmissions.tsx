@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import Markdown from 'react-markdown';
 
-import { BACKEND_URL, getBackend, useSetPageTitle } from '../utils';
 import ErrorMessage from '../components/ErrorMessage';
+
 import AuthTokenContext from '../AuthTokenContext';
-import { useNavigate } from 'react-router';
+import { BACKEND_URL, getBackend, useSetPageTitle } from '../utils';
 
 interface IPatientSubmission {
   patientId: string;
@@ -13,6 +14,7 @@ interface IPatientSubmission {
   symptoms: string[];
   additional: string;
   diagnosis: string;
+  created: string;
 }
 
 export default function PatientSubmissions() {
@@ -44,6 +46,9 @@ export default function PatientSubmissions() {
   return (
     <section>
       <h2>Patient Submissions</h2>
+      <p>
+        <Link to="/user">Back to your hub</Link>
+      </p>
       <ErrorMessage message={message} />
       {!submissions && !message && <p>Working...</p>}
       {submissions && submissions.length === 0 && <p>No patient submissions found.</p>}
@@ -57,7 +62,7 @@ export default function PatientSubmissions() {
               <div style={{ display: "flex", justifyContent: "center", textAlign: "left" }}>
                 <img
                   src={BACKEND_URL + submission.imagePath}
-                  style={{ height: "500px", marginRight: "20px" }}
+                  style={{ height: "500px", marginRight: "20px", transform: "translateX(7px)" }}
                 />
                 <div style={{ marginRight: "25px"}}>
                   <p style={{ marginTop: "0" }}>
@@ -88,6 +93,9 @@ export default function PatientSubmissions() {
                   </div>
                 </div>
               </div>
+              <p style={{ textAlign: "center", margin: "0 0 10px" }}>
+                <i>Submitted on {submission.created}</i>
+              </p>
             </div>
           ))}
         </div>

@@ -46,7 +46,7 @@ export default function SignUpPage() {
             <tr>
               <td>
                 <label htmlFor="username">
-                  Username:
+                  Name:
                 </label>
               </td>
               <td>

@@ -5,16 +5,14 @@ import ErrorMessage from '../components/ErrorMessage';
 
 import AuthTokenContext from '../AuthTokenContext';
 import { IPatientData } from '../types';
-import { getBackend, postBackend } from '../utils';
+import { getBackend, postBackend, useSetPageTitle } from '../utils';
 
 function ViewPatients({ token }: { token: string }) {
   const [patients, setPatients] = useState<IPatientData[] | null>(null);
   const [lastCopied, setLastCopied] = useState(-1);
   const [message, setMessage] = useState("");
 
-  async function copyText(text: string) {
-    await navigator.clipboard.writeText(text);
-  }
+  useSetPageTitle("Manage Patients");
 
   useEffect(() => {
     setTimeout(async () => {
@@ -26,6 +24,10 @@ function ViewPatients({ token }: { token: string }) {
       setPatients(result.body);
     });
   }, []);
+
+  async function copyText(text: string) {
+    await navigator.clipboard.writeText(text);
+  }
 
   return (
     <>
@@ -48,10 +50,25 @@ function ViewPatients({ token }: { token: string }) {
                   e.preventDefault();
                   return false;
                 }}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", textDecoration: "none" }}
               >
-                {i === lastCopied ? "(share link copied)" : "(copy share link)"}
+                (
+                <span style={{ textDecoration: "underline" }}>
+                  {i === lastCopied ? "share link copied" : "copy share link"}
+                </span>
+                )
               </a>
+              {" "}
+              <Link
+                to={`/remove-patient?id=${patient.shareKey}`}
+                style={{ textDecoration: "none" }}
+              >
+                (
+                <span style={{ textDecoration: "underline" }}>
+                  remove
+                </span>
+                )
+              </Link>
             </li>
           ))}
         </ul>
